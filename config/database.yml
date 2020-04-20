@@ -1,0 +1,21 @@
+default: &default
+ adapter: postgresql
+ encoding: unicode
+ host: db
+ username: postgres
+ password:
+ pool: 5
+
+development:
+  <<: *default
+  database: fb_oauth_development
+
+test:
+  <<: *default
+  database: fb_oauth_test
+
+production:
+  <<: *default
+  database: fb_oauth_production
+  username: fb_oauth
+  password: <%= ENV['FB_OAUTH_DATABASE_PASSWORD'] %>
