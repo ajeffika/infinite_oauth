@@ -1,0 +1,20 @@
+- if current_user
+  .page-header
+    h1 Here is some info about you...
+  .panel.panel-default
+    .panel-body
+      ul
+        li
+          strong Name:
+          = current_user.name
+        li
+          strong Provider:
+          = current_user.provider
+        li
+          strong uID:
+          = current_user.uid
+        li
+          strong Avatar URL:
+          = image_tag(current_user.image_url)
+- else
+  =link_to 'Log In Via Facebook', authorize_link
