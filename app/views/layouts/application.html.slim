@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    title FbOauth
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+  body
+    nav.navbar.navbar-inverse
+      .container
+        .navbar-header
+          = link_to 'Home', root_path, class: 'navbar-brand'
+        #navbar
+          - if current_user
+            ul.nav.navbar-nav.pull-right
+              li= image_tag current_user.image_url, alt: current_user.name
+              li= button_to 'Log Out', logout_path, method: :delete
+          - else
+            ul.nav.navbar-nav
+              li
+                = link_to 'Log In Via Facebook', authorize_link, class: 'btn btn-block btn-social btn-facebook'
+    .container
+      - flash.each do |key, value|
+        div class=("alert alert-#{key}")
+          = value
+      = yield

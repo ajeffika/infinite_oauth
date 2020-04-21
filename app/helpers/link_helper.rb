@@ -1,22 +1,43 @@
 module LinkHelper
   require 'securerandom'
 
-  def get_access_token(code)
-    "https://graph.facebook.com/v6.0/oauth/access_token?
-client_id=1500342126801723
-&redirect_uri=http://localhost:3000/auth/facebook/callback
-&client_secret=8dd3cdbe7a01e2270db3d2e6df7603db&code=#{code}"
+  def access_token_url(code)
+    "#{ENV.fetch('FACEBOOK_API_BASE_URL')}/v6.0/oauth/access_token?#{access_token_params(code).to_query}"
   end
 
-  def get_user_data(access_token)
-    "https://graph.facebook.com/me?access_token=#{access_token}"
+  def user_data_url(access_token)
+    "#{ENV.fetch('FACEBOOK_API_BASE_URL')}/me?access_token=#{access_token}"
   end
 
-  def get_profile_picture(user_id)
-    "https://graph.facebook.com/#{user_id}/picture?redirect=0&type=normal"
+  def profile_picture_url(user_id)
+    "#{ENV.fetch('FACEBOOK_API_BASE_URL')}/#{user_id}/picture?redirect=0&type=normal"
   end
 
   def authorize_link
-    "https://www.facebook.com/v6.0/dialog/oauth?client_id=1500342126801723&redirect_uri=http://localhost:3000/auth/facebook/callback&state=#{SecureRandom.hex}"
+    "#{ENV.fetch('FACEBOOK_AUTH_BASE_URL')}/v6.0/dialog/oauth?#{authorize_link_params.to_query}"
+  end
+
+  private
+
+  def access_token_params(code)
+    {
+      client_id: ENV.fetch('FACEBOOK_CLIENT_ID'),
+      client_secret: ENV.fetch('FACEBOOK_CLIENT_SECRET'),
+      redirect_uri: redirect_url,
+      code: code
+    }
+  end
+
+  def authorize_link_params
+    {
+      client_id: ENV.fetch('FACEBOOK_CLIENT_ID'),
+      redirect_uri: redirect_url,
+      state: SecureRandom.hex
+
+    }
+  end
+
+  def redirect_url
+    "#{request.base_url}/auth/facebook/callback"
   end
 end

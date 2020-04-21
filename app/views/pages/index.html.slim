@@ -16,5 +16,5 @@
         li
           strong Avatar URL:
           = image_tag(current_user.image_url)
-- else
-  =link_to 'Log In Via Facebook', authorize_link
+-else
+  = 'You are not logged in'

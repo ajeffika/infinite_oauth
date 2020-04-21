@@ -14,7 +14,7 @@ services:
   db:
     image: postgres
     volumes:
-      - ./tmp/db:/var/lib/pgsql/11/data
+      - ./tmp/db:/var/lib/postgres/data
     environment:
       POSTGRES_DB: "db"
       POSTGRES_HOST_AUTH_METHOD: "trust"
