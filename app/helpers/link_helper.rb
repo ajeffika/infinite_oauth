@@ -33,7 +33,6 @@ module LinkHelper
       client_id: ENV.fetch('FACEBOOK_CLIENT_ID'),
       redirect_uri: redirect_url,
       state: SecureRandom.hex
-
     }
   end
 

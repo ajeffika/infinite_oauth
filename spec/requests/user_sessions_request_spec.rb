@@ -1,14 +1,17 @@
 require 'rails_helper'
-describe 'FacebookLogin', type: :request do
 
-  before(:each) do
-    user = create(:user)
-    user_hash = {
+describe 'FacebookLogin', type: :request do
+  let(:user) { create(:user) }
+  let(:user_hash) do
+    {
       access_token: user.token,
       user_data: { name: user.name, id: user.uid },
       user_avatar: user.image_url,
       provider: user.provider
     }
+  end
+
+  before do
     get '/auth/facebook/create_account', params: { user_hash: user_hash }
   end
 

@@ -4,12 +4,8 @@ class SessionsController < ApplicationController
 
   def create
     begin
-      @user = User.oauth_create_user(params[:user_hash][:access_token],
-                                     params[:user_hash][:user_data],
-                                     params[:user_hash][:user_avatar],
-                                     params[:user_hash][:provider])
-      session[:user_id] = @user.id
-      flash[:success] = "Welcome, #{@user.name}!"
+      session[:user_id] = user.id
+      flash[:success] = "Welcome, #{user.name}!"
     rescue
       flash[:warning] = 'There was an error while trying to authenticate you...'
     end
@@ -22,5 +18,14 @@ class SessionsController < ApplicationController
       flash[:success] = 'See you!'
     end
     redirect_to root_path
+  end
+
+  private
+
+  def user
+    @user ||= User.oauth_create_user(params[:user_hash][:access_token],
+                                     params[:user_hash][:user_data],
+                                     params[:user_hash][:user_avatar],
+                                     params[:user_hash][:provider])
   end
 end

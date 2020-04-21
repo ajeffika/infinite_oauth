@@ -3,9 +3,8 @@ class User < ApplicationRecord
     def oauth_create_user(user_token, auth_hash, user_avatar, provider)
       user = find_or_create_by(uid: auth_hash['id'], provider: provider)
       full_name = auth_hash['name'].split(' ')
-      surname = full_name.drop(1).join(' ')
       user.name = full_name.first
-      user.surname = surname
+      user.surname = full_name.drop(1).join(' ')
       user.token = user_token
       user.image_url = user_avatar
       user.save!
