@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   class << self
-    def oauth_create_user(auth_hash, user_token, user_avatar)
-      user = find_or_create_by(uid: auth_hash['id'], provider: 'facebook')
+    def oauth_create_user(user_token, auth_hash, user_avatar, provider)
+      user = find_or_create_by(uid: auth_hash['id'], provider: provider)
       full_name = auth_hash['name'].split(' ')
       surname = full_name.drop(1).join(' ')
       user.name = full_name.first

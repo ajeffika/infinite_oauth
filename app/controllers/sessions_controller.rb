@@ -3,11 +3,12 @@ class SessionsController < ApplicationController
   include LinkHelper
 
   def create
-    user_data_requests
     begin
-      @user = User.oauth_create_user(@user_hash[:user_data],
-                                     @user_hash[:access_token],
-                                     @user_hash[:user_avatar])
+      @user = User.oauth_create_user(params[:user_hash][:access_token],
+                                     params[:user_hash][:user_data],
+                                     params[:user_hash][:user_avatar],
+                                     params[:user_hash][:provider],
+                                     )
       session[:user_id] = @user.id
       flash[:success] = "Welcome, #{@user.name}!"
     rescue
@@ -22,13 +23,5 @@ class SessionsController < ApplicationController
       flash[:success] = 'See you!'
     end
     redirect_to root_path
-  end
-
-  private
-
-  def user_data_requests
-    @user_hash = { access_token: make_request(access_token_url(params[:code]))['access_token'] }
-    @user_hash[:user_data] = make_request(user_data_url(@user_hash[:access_token]))
-    @user_hash[:user_avatar] = make_request(profile_picture_url(@user_hash[:user_data]['id']))['data']['url']
   end
 end
